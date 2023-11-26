@@ -14,24 +14,6 @@ const instance = axios.create({
 });
 
 let loading = null;
-// instance.interceptors.request.use((config)=>{
-//     if(config.showLoading){
-//         loading=ElLoading.service({
-//             lock:true,
-//             text:"加载中.......",
-//             background:"rgba(0,0,0,0.7)"
-//         })
-//     }
-//     return config;
-// },(error) => {
-//     if(config.showLoading && loading){
-//         loading.close();
-//     }
-//     Message.error("请求发送失败");
-//     return Promise.reject("请求发送失败");
-//     }
-//
-// );
 
 instance.interceptors.request.use((config)=>{
     if (config.showLoading) {
@@ -50,26 +32,6 @@ instance.interceptors.request.use((config)=>{
     return Promise.reject("请求发送失败");
 });
 
-// instance.interceptors.response.use(
-//     (response)=>{
-//         const {showLoading,errorCallback,showError=true} = response.config;
-//         if(showLoading && loading){
-//             loading.close();
-//         }
-//         const responseData = response.data;
-//         if(responseData.code == 200){
-//             return responseData;
-//         }else if(responseData.code==901){
-//             store.commit("showLogin",true);
-//             store.commit("updateLoginUserInfo",null);
-//             return Promise.reject({showError:false,msg:"登陆超时"});
-//         }
-//     },(error)=>{
-//         if (error.config && error.config.errorCallback) {
-//             error.config.errorCallback(error);
-//         }
-//     }
-// );
 
 instance.interceptors.response.use(
     (response) => {

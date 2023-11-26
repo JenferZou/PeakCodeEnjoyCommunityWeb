@@ -2,9 +2,9 @@
 <div class="cover" :style="{width:width+'px',height:width+'px'}">
 <el-image
         :style="{width:width+'px',height:width+'px'}"
-        fit="scale-down",
-        loading="lazy",
-        :src
+        fit="scale-down"
+        loading="lazy"
+        :src="proxy.globalInfo.imageUrl"
 >
 
 </el-image>

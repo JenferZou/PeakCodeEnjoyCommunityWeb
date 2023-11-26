@@ -16,12 +16,17 @@ import Dialog from "@/components/Dialog.vue"
 import Verify from "@/utils/verify";
 import Message from "@/utils/Message"
 import Request from "@/utils/Request"
-
+import PageDataList from "@/components/PageDataList.vue"
+import Nodata from "@/components/Nodata.vue"
 
 const app = createApp(App)
 
 app.use(ElementPlus);
 app.component("Dialog",Dialog);
+app.component("PageDataList",PageDataList);
+app.component("Nodata",Nodata);
+
+
 app.use(store)
 app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo={

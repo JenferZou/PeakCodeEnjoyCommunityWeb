@@ -36,15 +36,16 @@
 
         </div>
 
-        <div class="cover" v-if="data.cover">
-            <img src="'/api/file/getImage/'+ data.cover"/>
-        </div>
+
+        <Cover :cover="data.cover" :width="100" v-if="data.cover"></Cover>
 
     </div>
 </div>
 </template>
 
 <script setup>
+import Cover from "@/components/Cover.vue";
+
 const props = defineProps({
     data:{
         type:Object,
@@ -56,7 +57,7 @@ const props = defineProps({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .article-item {
     padding: 5px 10px 0px 10px;
 

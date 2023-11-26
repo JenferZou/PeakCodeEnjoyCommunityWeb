@@ -1,6 +1,17 @@
 <template>
 <div>
 
+<!--    <el-container>-->
+<!--        <el-header>Header</el-header>-->
+<!--        <el-container>-->
+<!--            <el-aside width="200px">Aside</el-aside>-->
+<!--            <el-container>-->
+<!--                <el-main>Main</el-main>-->
+<!--                <el-footer>Footer</el-footer>-->
+<!--            </el-container>-->
+<!--        </el-container>-->
+<!--    </el-container>-->
+
     <div class="header" v-if="showHeader">
         <div class="header-content" :style="{width:proxy.globalInfo.headbodywidth+'px'}">
               <div class="logo">
@@ -9,23 +20,25 @@
                   </span>
               </div>
             <div class="menu-panel">
+                <span class="menu-item" to="/">首页</span>
                 <template v-for="board in boardList">
                 <el-popover
                         placement="bottom-start"
                         :width="300"
-                        trigger="click"
+                        trigger="hover"
                         v-if="board.children.length >0"
+
                 >
                     <template #reference>
-                        <span class="menu-item">{{board.board_name}}</span>
+                        <span class="menu-item" @click="boardClickHandler(board)">{{board.board_name}}</span>
                     </template>
                     <div class="sub-board-list">
-                        <span class="sub-board" v-for="subboard in board.children">
+                        <span class="sub-board" v-for="subboard in board.children" @click="subBoardClickHandler(subboard)">
                             {{subboard.board_name}}
                         </span>
                     </div>
                 </el-popover>
-                    <span class="menu-item" v-else>{{board.board_name}}</span>
+                    <span class="menu-item" v-else @click="boardClickHandler(board)">{{board.board_name}}</span>
                 </template>
             </div>
             <div class="user-info-panel">
@@ -75,6 +88,8 @@
 
 <!--    </div>-->
 
+
+
 <div class="body-content">
     <router-view/>
 </div>
@@ -88,6 +103,9 @@
     <LoginAndRegister ref="loginRegisterRef">
 
     </LoginAndRegister>
+
+
+
 </div>
 
 </template>
@@ -146,10 +164,12 @@ const getUserInfo= async ()=>{
     store.commit("updateLoginUserInfo",result.date)
 };
 
+const myPopover = ref(null);
 onMounted(()=>{
     initScroll();
     // getUserInfo();
-    }
+
+}
 
 );
 
@@ -163,6 +183,7 @@ const loadBoard = async ()=>{
         return;
     };
     boardList.value = result.data;
+
 };
 loadBoard();
 
@@ -213,12 +234,25 @@ const logoInfo = ref([
     },
 ]);
 
+//一级模块点击事件
+const boardClickHandler=(board)=>{
+router.push(`/forum/${board.board_id}`);
 
+};
+
+//二级模块点击事件
+const subBoardClickHandler = (subBoard)=>{
+    router.push(`/forum/${subBoard.p_board_id}/${subBoard.board_id}`);
+};
 
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.fade-leave-to {
+  display: none;
+}
+
 
 .header{
   top: 0px;
@@ -226,6 +260,8 @@ const logoInfo = ref([
   position: fixed;
   background: #ffffff;
   box-shadow: 0 2px 6px 0 #ddd;
+  z-index: 1;
+  transition: top 1s;
 
   .header-content {
     margin: 0px auto;
@@ -247,6 +283,8 @@ const logoInfo = ref([
       .menu-item{
         margin-left: 20px;
         cursor: pointer;
+
+
       }
     }
 

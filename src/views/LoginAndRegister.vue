@@ -466,7 +466,7 @@ const doSubmit = ()=>{
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .login-register{
     .send-email-panel{
         display: flex;

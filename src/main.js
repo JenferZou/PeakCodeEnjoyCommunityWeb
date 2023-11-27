@@ -31,7 +31,7 @@ app.use(store)
 app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo={
     headbodywidth:1250,
-    contentwidth:1100,
+    contentwidth:760,
     avataUrl:"/api/file/getAvatar/",
     imageUrl:"/api/file/getImage/"
 };

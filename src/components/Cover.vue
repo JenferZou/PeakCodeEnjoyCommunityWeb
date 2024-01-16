@@ -4,7 +4,7 @@
         :style="{width:width+'px',height:width+'px'}"
         fit="scale-down"
         loading="lazy"
-        :src="proxy.globalInfo.imageUrl"
+        :src="proxy.globalInfo.imageUrl+cover"
 >
 
 </el-image>

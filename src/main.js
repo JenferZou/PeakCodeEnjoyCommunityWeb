@@ -16,15 +16,23 @@ import Dialog from "@/components/Dialog.vue"
 import Verify from "@/utils/verify";
 import Message from "@/utils/Message"
 import Request from "@/utils/Request"
+import Confirm from "@/utils/Comfirm";
+import FileSizeFormat from "@/utils/FileSizeFormat";
 import PageDataList from "@/components/PageDataList.vue"
 import Nodata from "@/components/Nodata.vue"
-
+import ImageViewer from "@/components/ImageViewer.vue"
+import Avatar from "@/components/Avatar.vue";
+// import HighLightCode from "@/utils/HighLightCode";
 const app = createApp(App)
 
 app.use(ElementPlus);
 app.component("Dialog",Dialog);
 app.component("PageDataList",PageDataList);
 app.component("Nodata",Nodata);
+app.component("ImageViewer",ImageViewer);
+app.component("Avatar",Avatar);
+
+
 
 
 app.use(store)
@@ -32,12 +40,18 @@ app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo={
     headbodywidth:1250,
     contentwidth:760,
-    avataUrl:"/api/file/getAvatar/",
+    articleWidth:900,
+    avatarUrl:"/api/file/getAvatar/",
     imageUrl:"/api/file/getImage/"
 };
 app.config.globalProperties.Verify = Verify;
 app.config.globalProperties.Message = Message;
 app.config.globalProperties.Request = Request;
+app.config.globalProperties.FileSizeFormat = FileSizeFormat;
+app.config.globalProperties.Confirm = Confirm;
+// app.config.globalProperties.HighLightCode = HighLightCode;
+
+
 
 
 app.use(router)

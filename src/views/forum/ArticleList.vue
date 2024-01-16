@@ -1,6 +1,16 @@
 <template>
 <div class="container-body article-list-body"
 :style="{width:proxy.globalInfo.contentwidth+'px'}">
+    <!--二级板块信息-->
+    <div class="sub-board" v-if="pBoardId" >
+        <span :class="['board-item',boardId==0?'active':'']">
+            <router-link :to="`/forum/${pBoardId}`">全部</router-link>
+        </span>
+        <span v-for="item in subBoardList" style="height: 20px"
+              :class="['board-item',item.board_id==boardId?'active':'']" >
+           <router-link :to="`/forum/${item.p_board_id}/${item.board_id}`">{{item.board_name}}</router-link>
+        </span>
+    </div>
 <div class="article-panel">
     <div class="top-tab">
         <div :class="['tab',orderType==0?'active':'']" @click="changeOrderType(0)">热榜</div>
@@ -33,9 +43,13 @@ import {ref, reactive, getCurrentInstance, onMounted, watch, nextTick} from "vue
 import {useRouter,useRoute} from "vue-router";
 import ArticleListItem from "@/views/forum/ArticleListItem.vue";
 import PageDataList from "@/components/PageDataList.vue";
+import {useStore} from "vuex";
+
 const {proxy} = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
+const store = useStore();
+
 const api={
     loadArticle:"/forum/loadArticle",
 };
@@ -43,6 +57,13 @@ const api={
 const pBoardId = ref(0);
 //二级模块
 const boardId  = ref(0);
+
+//二级板块
+const subBoardList = ref([]);
+
+const setSubBoard =()=>{
+    subBoardList.value=store.getters.getSubBoardList(pBoardId.value);
+};
 
 const articleListInfo = ref({
     list: [] // 初始化为一个空数组
@@ -70,8 +91,8 @@ const loadArticle = async ()=>{
     }
     articleListInfo.value =result.data;
 
+
 };
-loadArticle();
 //切换热榜、最新信息
 const changeOrderType = (type)=>{
     orderType.value = type;
@@ -84,17 +105,48 @@ const changeOrderType = (type)=>{
 watch(()=>route.params,
     (newval,oldval)=>{
     pBoardId.value = newval.pBoardId;
-    boardId.value = newval.boardId;
-    loadArticle();
+    boardId.value = newval.boardId || 0;
+        setSubBoard();
+        loadArticle();
+        store.commit("setActivePBoardId",newval.pBoardId);
+        store.commit("setActiveBoardId",newval.boardId);
+
     },
     {immediate:true,deep:true});
 
-
+watch(
+    ()=>store.state.boardList,(newVal,oldValue)=>{
+        setSubBoard();
+    },
+    {immediate:true,deep:true}
+);
 
 </script>
 
 <style lang="scss" scoped>
 .article-list-body{
+    .sub-board{
+        padding: 5px 0px 10px 0px;
+        .board-item{
+            background: #fff;
+            border-radius: 15px;
+            padding: 2px 10px;
+            margin-right: 10px;
+            color: #909090;
+            cursor: pointer;
+            font-size: 14px;
+            a{
+                text-decoration: none;
+                color: #909090;
+            }
+        }
+        .active {
+            background: var(--link);
+            a{
+                color: #fff;
+            }
+        }
+    }
   .article-panel{
     background: #fff;
     .top-tab{

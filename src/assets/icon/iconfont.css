@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4252224 */
-  src: url('iconfont.woff2?t=1697100127111') format('woff2'),
-       url('iconfont.woff?t=1697100127111') format('woff'),
-       url('iconfont.ttf?t=1697100127111') format('truetype');
+  src: url('iconfont.woff2?t=1705308951988') format('woff2'),
+       url('iconfont.woff?t=1705308951988') format('woff'),
+       url('iconfont.ttf?t=1705308951988') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,58 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-weidenglu-touxiang:before {
+  content: "\e616";
+}
+
+.icon-more:before {
+  content: "\e6ad";
+}
+
+.icon-more1:before {
+  content: "\e600";
+}
+
+.icon-more2:before {
+  content: "\e679";
+}
+
+.icon-pinglun:before {
+  content: "\e615";
+}
+
+.icon-Message:before {
+  content: "\e614";
+}
+
+.icon-img:before {
+  content: "\e651";
+}
+
+.icon-attachment:before {
+  content: "\e683";
+}
+
+.icon-attachment1:before {
+  content: "\e7e1";
+}
+
+.icon-zip:before {
+  content: "\e741";
+}
+
+.icon-zip-full:before {
+  content: "\ea4a";
+}
+
+.icon-xiaojiantou:before {
+  content: "\e666";
+}
+
+.icon-icon_right:before {
+  content: "\e613";
 }
 
 .icon-empty:before {

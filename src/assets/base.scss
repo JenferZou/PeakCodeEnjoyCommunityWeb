@@ -35,6 +35,9 @@
 
   --section-gap: 160px;
   --link:#007fff;
+  --pink:#FF6699;
+  --test2:#61666d;
+  --icon:#9499a0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -58,6 +61,9 @@
   margin: 0;
   font-weight: normal;
 }
+*{
+  box-sizing: border-box;
+}
 
 body {
   //min-height: 100vh;
@@ -74,6 +80,7 @@ body {
   padding: 0px;
   margin: 0px;
   background: rgb(243,243,243);
+
 }
 
 .a-link{
@@ -85,4 +92,13 @@ body {
 .container-body{
 margin: 0px auto;
   padding-top: 5px;
+}
+
+/* 例如给div添加样式 */
+div{
+  //-webkit-user-select:none;/*谷歌 /Chrome*/
+  //-moz-user-select:none; /*火狐/Firefox*/
+  //-ms-user-select:none;    /*IE 10+*/
+  //user-select:none;
+  //caret-color: rgba(0,0,0,0);
 }

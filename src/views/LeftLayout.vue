@@ -20,14 +20,11 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'LeftLayout',
-    // 组件逻辑和生命周期方法
-}
+<script setup>
+
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .main-container {
     display: flex;
     min-height: 100vh;

@@ -1,138 +1,104 @@
 <template>
 <div>
 
-    <el-container>
-        <el-header>
-            <div class="header" v-if="showHeader">
-            <div class="header-content" :style="{width:proxy.globalInfo.headbodywidth+'px'}">
-                <div class="logo">
-                  <span v-for="item in logoInfo" :style="{color: item.color}">
-                      {{item.letter}}
-                  </span>
-                </div>
-                <div class="menu-panel">
-                    <span class="menu-item" to="/">首页</span>
-                    <template v-for="board in boardList">
-                        <el-popover
-                                placement="bottom-start"
-                                :width="300"
-                                trigger="hover"
-                                v-if="board.children.length >0"
+<!--            <div class="header" v-if="showHeader">-->
+<!--            <div class="header-content" :style="{width:proxy.globalInfo.headbodywidth+'px'}">-->
+<!--                <div class="logo">-->
+<!--                  <span v-for="item in logoInfo" :style="{color: item.color}">-->
+<!--                      {{item.letter}}-->
+<!--                  </span>-->
+<!--                </div>-->
+<!--                <div class="menu-panel">-->
+<!--                    <router-link :class="['menu-item home',activePBoardId==undefined?'active':'']" to="/">首页</router-link>-->
+<!--                    <template v-for="board in boardList">-->
+<!--                        <el-popover-->
+<!--                                placement="bottom-start"-->
+<!--                                :width="300"-->
+<!--                                trigger="hover"-->
+<!--                                v-if="board.children.length >0"-->
 
-                        >
-                            <template #reference>
-                                <span class="menu-item" @click="boardClickHandler(board)">{{board.board_name}}</span>
-                            </template>
-                            <div class="sub-board-list">
-                        <span class="sub-board" v-for="subboard in board.children" @click="subBoardClickHandler(subboard)">
-                            {{subboard.board_name}}
-                        </span>
-                            </div>
-                        </el-popover>
-                        <span class="menu-item" v-else @click="boardClickHandler(board)">{{board.board_name}}</span>
-                    </template>
-                </div>
-                <div class="user-info-panel">
+<!--                        >-->
+<!--                            <template #reference>-->
+<!--                                <span :class="['menu-item',board.board_id==activePBoardId?'active':'']"-->
+<!--                                      @click="boardClickHandler(board)">{{board.board_name}}</span>-->
+<!--                            </template>-->
+<!--                            <div class="sub-board-list">-->
+<!--                        <span :class="['sub-board',subboard.board_id==activeBoardId?'active':'']"-->
+<!--                              v-for="subboard in board.children"-->
+<!--                              @click="subBoardClickHandler(subboard)">-->
+<!--                            {{subboard.board_name}}-->
+<!--                        </span>-->
+<!--                            </div>-->
+<!--                        </el-popover>-->
+<!--                        <span :class="['menu-item',board.board_id==activePBoardId?'active':'']" v-else @click="boardClickHandler(board)">{{board.board_name}}</span>-->
+<!--                    </template>-->
+<!--                </div>-->
+<!--                <div class="user-info-panel">-->
 
-                    <div class="op-btn">
-                        <el-button type="primary">发帖
-                            <span class="iconfont icon-jia" style="padding-left: 3px">
-                </span>
-                        </el-button>
-                        <el-button type="primary" :style="{'margin-left':'3px'}">搜索
-                            <span class="iconfont icon-sousuo" style="padding-left: 3px">
-                </span>
-                        </el-button>
-                    </div>
-                    <div v-if="userInfo.userId">
-                        <div class="user-info">
-                            <el-dropdown :style="{'margin-left':'10px'}">
-                                <div class="iconfont icon-zixun"></div>
-                                <template #dropdown>
-                                    <el-dropdown-menu>
-                                        <el-dropdown-item>
-                                            回复我的
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            赞了我的文章的
-                                        </el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </template>
-                            </el-dropdown>
+<!--                    <div class="op-btn">-->
+<!--                        <el-button type="primary">发帖-->
+<!--                            <span class="iconfont icon-jia" style="padding-left: 3px">-->
+<!--                </span>-->
+<!--                        </el-button>-->
+<!--                        <el-button type="primary" :style="{'margin-left':'3px'}">搜索-->
+<!--                            <span class="iconfont icon-sousuo" style="padding-left: 3px">-->
+<!--                </span>-->
+<!--                        </el-button>-->
+<!--                    </div>-->
 
-                        </div>
-                    </div>
+<!--                    <template v-if="userInfo.userId">-->
+<!--                        <div class="message-info">-->
+<!--                            <el-dropdown :style="{'margin-left':'10px'}">-->
+<!--                                <el-badge :value="12" class="item">-->
+<!--                                    <div class="iconfont icon-Message"></div>-->
+<!--                                </el-badge>-->
+<!--                                <template #dropdown>-->
+<!--                                    <el-dropdown-menu>-->
+<!--                                        <el-dropdown-item>-->
+<!--                                            回复我的-->
+<!--                                        </el-dropdown-item>-->
+<!--                                        <el-dropdown-item>-->
+<!--                                            赞了我的文章的-->
+<!--                                        </el-dropdown-item>-->
+<!--                                    </el-dropdown-menu>-->
+<!--                                </template>-->
+<!--                            </el-dropdown>-->
+<!--                        </div>-->
+<!--                        <div class="user-info">-->
+<!--                            <el-dropdown>-->
+<!--                                <Avatar :width="50"></Avatar>-->
+<!--                                <template #dropdown>-->
+<!--                                    <el-dropdown-menu>-->
+<!--                                        <el-dropdown-item>-->
+<!--                                            我的主页-->
+<!--                                        </el-dropdown-item>-->
+<!--                                        <el-dropdown-item>-->
+<!--                                            退出-->
+<!--                                        </el-dropdown-item>-->
+<!--                                    </el-dropdown-menu>-->
+<!--                                </template>-->
+<!--                            </el-dropdown>-->
+
+<!--                        </div>-->
+<!--                    </template>-->
 
 
+<!--                    <el-button-group :style="{'margin-left':'10px'}" v-else>-->
+<!--                        <el-button type="primary" plain @click="loginAndRegister(1)">登录</el-button>-->
+<!--                        <el-button type="primary" plain @click="loginAndRegister(0)">注册</el-button>-->
+<!--                    </el-button-group>-->
+<!--                </div>-->
 
-                    <el-button-group :style="{'margin-left':'10px'}" v-else>
-                        <el-button type="primary" plain @click="loginAndRegister(1)">登录</el-button>
-                        <el-button type="primary" plain @click="loginAndRegister(0)">注册</el-button>
-                    </el-button-group>
-                </div>
+<!--            </div>-->
 
-            </div>
-
-        </div>
-
-        </el-header>
+<!--        </div>-->
+<Head></Head>
 
 
-        <el-container>
-            <el-aside width="220px">
-                <div style="background-color: #ffffff;">
-                    <el-col :span="24">
-                        <el-menu
-                            default-active="2"
-                            class="el-menu-vertical-demo"
-                            @open="handleOpen"
-                            @close="handleClose"
-                        >
-                            <el-sub-menu index="1">
-                                <template #title>
-                                    <el-icon><location /></el-icon>
-                                    <span>Navigator One</span>
-                                </template>
-                                <el-menu-item-group title="Group One">
-                                    <el-menu-item index="1-1">item one</el-menu-item>
-                                    <el-menu-item index="1-2">item two</el-menu-item>
-                                </el-menu-item-group>
-                                <el-menu-item-group title="Group Two">
-                                    <el-menu-item index="1-3">item three</el-menu-item>
-                                </el-menu-item-group>
-                                <el-sub-menu index="1-4">
-                                    <template #title>item four</template>
-                                    <el-menu-item index="1-4-1">item one</el-menu-item>
-                                </el-sub-menu>
-                            </el-sub-menu>
-                            <el-menu-item index="2">
-                                <el-icon><icon-menu /></el-icon>
-                                <span>Navigator Two</span>
-                            </el-menu-item>
-                            <el-menu-item index="3" disabled>
-                                <el-icon><document /></el-icon>
-                                <span>Navigator Three</span>
-                            </el-menu-item>
-                            <el-menu-item index="4">
-                                <el-icon><setting /></el-icon>
-                                <span>Navigator Four</span>
-                            </el-menu-item>
-                        </el-menu>
-                    </el-col>
-                </div>
-            </el-aside>
-            <el-container>
-                <el-main>
                     <div class="body-content">
                         <router-view/>
                     </div>
-                </el-main>
-            </el-container>
-            <el-aside width="250px">
 
-            </el-aside>
-        </el-container>
-    </el-container>
 
 
 
@@ -153,11 +119,10 @@ import {useRouter,useRoute} from "vue-router";
 import Dialog from "@/components/Dialog.vue";
 import LoginAndRegister from "@/views/LoginAndRegister.vue";
 import store from "@/store";
-import LeftLayout from "@/views/LeftLayout.vue";
-import RightLayout from "@/views/RightLayout.vue";
+import Avatar from "@/components/Avatar.vue";
+import Head from "@/views/Head.vue";
 const {proxy} = getCurrentInstance();
 const router = useRouter();
-const route = useRoute();
 
 const api ={
     getUserInfo:"/getUserInfo",
@@ -192,19 +157,19 @@ const initScroll = ()=>{
 };
 
 const getUserInfo= async ()=>{
-    let result = await  proxy.Request({
+    let result = await proxy.Request({
         url:api.getUserInfo
     });
     if(!result){
         return;
     }
-    store.commit("updateLoginUserInfo",result.date)
+    store.commit("updateLoginUserInfo",result.data);
 };
 
 const myPopover = ref(null);
 onMounted(()=>{
     initScroll();
-    // getUserInfo();
+    getUserInfo();
 
 }
 
@@ -212,6 +177,7 @@ onMounted(()=>{
 
 //获取板块信息
 const boardList =ref({});
+
 const loadBoard = async ()=>{
     let result = await proxy.Request({
         url:api.loadBoard,
@@ -251,6 +217,27 @@ const loginAndRegister = (type)=>{
     loginRegisterRef.value.showPanel(type);
 }
 
+const activePBoardId = ref(0);
+watch(
+    ()=>store.state.activePBoardId,
+    (newVal,oldValue)=>{
+        if(newVal!=0){
+            activePBoardId.value = newVal;
+        }
+    },
+    {immediate:true,deep:true}
+);
+
+const activeBoardId = ref(0);
+watch(
+    ()=>store.state.activeBoardId,
+    (newVal,oldValue)=>{
+            activeBoardId.value = newVal;
+    },
+    {immediate:true,deep:true}
+);
+
+
 
 //Zblog的logo
 const logoInfo = ref([
@@ -286,87 +273,14 @@ const subBoardClickHandler = (subBoard)=>{
 </script>
 
 <style lang="scss" scoped>
-.fade-leave-to {
-  display: none;
-}
 
-
-.header{
-  top: 0px;
-  width: 100%;
-  position: fixed;
-  background: #ffffff;
-  box-shadow: 0 2px 6px 0 #ddd;
-  z-index: 1;
-  transition: top 1s;
-
-  .header-content {
-    margin: 0px auto;
-    align-items: center;
-    height: 60px;
-    display: flex;
-    align-items: center;
-
-    .logo {
-      display: block;
-      margin-right: 5px;
-
-      span {
-        font-size: 30px;
-      }
-    }
-    .menu-panel{
-      flex: 1;
-      .menu-item{
-        margin-left: 20px;
-        cursor: pointer;
-
-
-      }
-    }
-
-    .user-info-panel{
-      width: 300px;
-        display: flex;
-        align-items: center;
-        .icon-zixun{
-            font-size:28px;
-        }
-
-    }
-
-
-  }
-
-}
-.sub-board-list{
-  display: flex;
-  flex-wrap: wrap;
-  .sub-board{
-    padding: 0px 10px;
-    border-radius: 20px;
-    background-color: rgb(239,239,239);
-    border: 1px solid #ddd;
-    color: rgb(199,119,118);
-    margin-top: 10px;
-    cursor: pointer;
-  }
-  .sub-board:hover{
-    color: var(--link);
-  }
-}
-.body-content{
-  position: relative;
-    width:800px;
-}
-
-.el-aside{
-    padding-left: 25px;
-    padding-top: 25px;
-    padding-right: 0px;
-
-}
 .el-header{
-    padding: 0;
+  padding: 0px;
 }
+
+.body-content{
+  margin: 80px auto;
+}
+
+
 </style>

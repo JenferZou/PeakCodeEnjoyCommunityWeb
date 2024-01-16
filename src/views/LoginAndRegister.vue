@@ -6,7 +6,7 @@
         :buttons="dialogConfig.buttons"
         width="400px"
         :showCancle="false"
-        @close="dialogConfig.show = false">
+        @close=closeDilago>
 
         <el-form :model="formData" :rules="rules" ref="formDataRef" class="login-register">
             <el-form-item prop="email">
@@ -454,8 +454,8 @@ const doSubmit = ()=>{
             }
             dialogConfig.show =false;
             proxy.Message.success("登陆成功");
-            store.commit("updateLoginUserInfo",result.date)
-
+            store.commit("updateLoginUserInfo",result.data)
+            location.reload();
         }else if(onType.value==2){
             proxy.Message.success("重置密码成功,请登录");
             showPanel(1);
@@ -463,6 +463,12 @@ const doSubmit = ()=>{
 
     });
 };
+
+
+const closeDilago = ()=>{
+    dialogConfig.show = false;
+    store.commit("showLogin",false);
+}
 
 </script>
 

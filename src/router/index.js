@@ -23,7 +23,13 @@ const router = createRouter({
       },
 
     ]
-  }]
+
+  },
+    {
+      path:'/post/:articleId/',
+      name:'文章详情',
+      component:()=>import('@/views/forum/ArticleDetail.vue'),
+    },]
 });
 
 export default router

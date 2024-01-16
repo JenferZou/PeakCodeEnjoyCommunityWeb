@@ -38,7 +38,7 @@ const emit = defineEmits(["loadData"])
 const handlePageNoChange = (pageNo)=>{
     props.dataSource.pageNo = pageNo;
     emit("loadData");
-    
+
 };
 
 </script>

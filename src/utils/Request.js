@@ -43,12 +43,11 @@ instance.interceptors.response.use(
         if (responseData.code == 200) {
             return responseData;
         } else if (responseData.code == 901) {
-            // store.commit("showLogin", true);
-            // store.commit("updateLoginUserInfo", null);
+            store.commit("showLogin", true);
+            store.commit("updateLoginUserInfo", null);
             return Promise.reject({ showError: false, msg: "登录超时" });
         } else {
-            // 请求错误或响应数据错误
-            // const errorMsg = responseData.msg || "请求失败";
+            const errorMsg = responseData.msg || "请求失败";
 
 
             if (errorCallback) {
@@ -90,7 +89,6 @@ const request=(config)=>{
     }).catch(error=>{
         if(error.showError){
             Message.error(error.msg)
-
         }
         return null;
     })

@@ -8,12 +8,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@highlightjs/vue-plugin": "^2.1.0",
     "@kangc/v-md-editor": "^2.3.17",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
     "axios": "^1.4.0",
     "element-plus": "^2.3.9",
     "highlight.js": "^11.8.0",
+    "highlightjs-line-numbers.js": "^2.8.0",
     "js-md5": "^0.7.3",
     "md5": "^2.3.0",
     "sass": "^1.66.1",
@@ -21,7 +23,8 @@
     "vue": "^3.3.4",
     "vue-cookies": "^1.8.3",
     "vue-router": "^4.0.13",
-    "vuex": "^4.1.0"
+    "vuex": "^4.1.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.3.1",

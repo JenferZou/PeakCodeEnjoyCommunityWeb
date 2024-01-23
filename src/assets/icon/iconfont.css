@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4252224 */
-  src: url('iconfont.woff2?t=1705308951988') format('woff2'),
-       url('iconfont.woff?t=1705308951988') format('woff'),
-       url('iconfont.ttf?t=1705308951988') format('truetype');
+  src: url('iconfont.woff2?t=1705982053376') format('woff2'),
+       url('iconfont.woff?t=1705982053376') format('woff'),
+       url('iconfont.ttf?t=1705982053376') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-remove:before {
+  content: "\e601";
+}
+
+.icon-remove1:before {
+  content: "\e620";
 }
 
 .icon-weidenglu-touxiang:before {

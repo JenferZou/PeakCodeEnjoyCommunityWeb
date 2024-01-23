@@ -80,8 +80,9 @@
                                 <CommentList
                                     v-if="articleInfo.article_id"
                                     :article-id="articleInfo.article_id"
-                                    :article-user-id="articleInfo.user_id">
-
+                                    :article-user-id="articleInfo.user_id"
+                                    @updateCommentCount="updateCommentCount"
+                                >
                                 </CommentList>
                             </div>
 
@@ -153,7 +154,7 @@ const downloadAttachment = async (fileId)=>{
         return;
     }
     //不需要积分或者是本人的文章直接下载
-    if(attachment.value.integral ==0 ||currentUserInfo.user_id!=articleInfo.user_id){
+    if(attachment.value.integral ==0 ||currentUserInfo.user_id!=articleInfo.value.user_id){
         downloadDo(fileId);
         return;
     }
@@ -316,7 +317,10 @@ const goToPosition = (domId)=>{
     document.querySelector("#"+domId).scrollIntoView();
 }
 
-
+//更新评论数量
+const updateCommentCount = (commentCount)=>{
+    articleInfo.value.comment_count = commentCount;
+}
 
 
 
@@ -424,7 +428,7 @@ const goToPosition = (domId)=>{
     }
 
     .quick-panel{
-        position: absolute;
+        position: fixed;
         width: 50px;
         top: 200px;
         text-align: center;

@@ -2,12 +2,12 @@
 <div class="comment-body">
     <div class="comment-title">
         <div class="title">
-            评论<span class="count">0</span>
+            评论<span class="count">{{commentListInfo.commentCount}}</span>
         </div>
         <div class="tab">
-            <span>热榜</span>
+            <span @click="orderChange(0)" :class="['tab-item',orderType==0?'active':'']">热榜</span>
             <el-divider direction="vertical"></el-divider>
-            <span>最新</span>
+            <span @click="orderChange(1)" :class="['tab-item',orderType==1?'active':'']">最新</span>
         </div>
     </div>
     <!--发送评论 -->
@@ -31,6 +31,7 @@
                     :articleUserId="articleUserId"
                     :currentUserId="currentUserInfo?.userId"
                     @hiddenAllReplay="hiddenAllReplyHandle"
+                    @updateSubCommentCount="updateSubCommentCount"
                     :articleId="articleId"
                 ></CommentListItem>
             </template>
@@ -62,11 +63,13 @@ const api = {
     changeTopType:"/comment/changeTopType"
 
 }
-//上传图片
-const selectImg =()=>{
+//排序
+const orderType =ref(0)
+const orderChange = (type)=>{
+    orderType.value = type;
+    loadComment();
+}
 
-};
-const orderTypt =ref(0)
 
 //评论列表
 const commentListInfo = ref({});
@@ -76,7 +79,7 @@ const loadComment =async ()=>{
     let params = {
         pageNo:commentListInfo.value.pageNo,
         articleId:props.articleId,
-        orderType:orderTypt.value,
+        orderType:orderType.value,
 
     }
     let result = await proxy.Request({
@@ -98,9 +101,21 @@ const hiddenAllReplyHandle = ()=>{
     });
 };
 
+const emit = defineEmits(["updateCommentCount"]);
 const postCommentFinish = (resultData)=>{
     commentListInfo.value.list.unshift(resultData)
+    const commentCount = commentListInfo.value.commentCount +1;
+    commentListInfo.value.commentCount = commentCount;
+    emit("updateCommentCount",commentCount);
 }
+
+//更新全部评论数量
+const updateSubCommentCount = ()=>{
+    const commentCount = commentListInfo.value.commentCount +1;
+    commentListInfo.value.commentCount = commentCount;
+    emit("updateCommentCount",commentCount);
+}
+
 
 //当前用户
 const currentUserInfo = ref({});
@@ -121,6 +136,14 @@ watch(()=>store.state.loginUserInfo,(newval,oldval)=>{
             .count{
                 font-size: 14px;
                 padding: 0px 10px;
+            }
+        }
+        .tab{
+            .tab-item{
+                cursor: pointer;
+            }
+            .active{
+                color: var(--link);
             }
         }
     }

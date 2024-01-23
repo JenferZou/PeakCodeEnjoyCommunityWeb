@@ -17,7 +17,13 @@
 
                 </el-input>
                                     <div class="insert-img" v-if="showInserImg">
-                                        <el-upload name="file"
+                                        <div class="pre-img" v-if="commentImg">
+                                            <CommentImage :src="commentImg"></CommentImage>
+                                            <span class="iconfont icon-remove"
+                                            @click="removeCommentImg"
+                                            ></span>
+                                        </div>
+                                        <el-upload name="file" v-else
                                                    :show-file-list="false"
                                                    accept=".jpg,.jpeg,.png,.gif,.gif,.BMP"
                                                    :multiple="false"
@@ -37,6 +43,7 @@
 
 <script setup>
 import {getCurrentInstance, nextTick, ref, watch} from "vue";
+import CommentImage from "@/views/comment/CommentImage.vue";
 const {proxy} = getCurrentInstance();
 const api = {
     postComment:"/comment/postComment",
@@ -69,12 +76,22 @@ const props = defineProps({
 })
 
 //form信息
+const checkPostComment = (rule,value,callback)=>{
+    if(value==null&&formData.value.image==null){
+        callback(new Error(rule.message))
+    }else {
+        callback();
+    }
+};
 const formData = ref({});
 const formDataRef = ref();
 const rule = {
     content:[
-        {required:true,message:'请输入评论内容'}
-    ]
+        {required:true,message:'请输入评论内容',validator:checkPostComment},
+        {min:5,message:'评论内容不能少于5个字'},
+
+    ],
+
 };
 const emit = defineEmits(["postCommentFinish"])
 const postCommentDo = ()=>{
@@ -96,11 +113,30 @@ const postCommentDo = ()=>{
         }
         proxy.Message.success('评论发表成功');
         formDataRef.value.resetFields();
+        removeCommentImg();
         emit("postCommentFinish",result.data);
 
     });
 
     };
+
+//选择图片
+const commentImg = ref(null);
+const selectImg =(file)=>{
+file = file.file;
+let img =  new FileReader();
+img.readAsDataURL(file);
+img.onload = ({target})=>{
+    let imgData = target.result;
+    commentImg.value = imgData;
+    formData.value.image = file;
+}
+};
+
+const removeCommentImg = ()=>{
+    commentImg.value = null;
+    formData.value.image = null;
+}
 
 
 </script>
@@ -120,9 +156,22 @@ const postCommentDo = ()=>{
                     font-size: 20px;
                     color: #3f3f3f;
                 }
+                .pre-img{
+                    position: relative;
+                    margin-top: 10px;
+                    .iconfont{
+                        cursor: pointer;
+                        font-size:15px;
+                        position: absolute;
+                        top: -10px;
+                        right: -10px;
+                        color: rgb(121,121,121);
+                    }
+                }
             }
         }
         .sent-btn{
+            cursor: pointer;
             width: 60px;
             height: 60px;
             background: var(--link);

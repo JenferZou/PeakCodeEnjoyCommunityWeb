@@ -6,6 +6,20 @@
   "description": "博客专用图标",
   "glyphs": [
     {
+      "icon_id": "7617118",
+      "name": "remove",
+      "font_class": "remove",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "25672161",
+      "name": "remove",
+      "font_class": "remove1",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
       "icon_id": "2578455",
       "name": "未登录-头像",
       "font_class": "weidenglu-touxiang",

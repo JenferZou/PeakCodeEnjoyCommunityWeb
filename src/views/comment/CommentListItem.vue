@@ -9,7 +9,11 @@
             </span>
         </div>
         <div class="comment-content">
-            <div v-html="commentData.content"></div>
+            <div>
+                <span class="tag tag-topping" v-if="commentData.top_type==1">置顶</span>
+                <span class="tag no-audit" v-if="commentData.status==0">待审核</span>
+                <span v-html="commentData.content"></span>
+            </div>
             <CommentImage :style="{'margin-top':'10px'}"
                           v-if="commentData.img_path"
                           :imageList="[proxy.globalInfo.imageUrl+commentData.img_path]"
@@ -22,7 +26,7 @@
                 <span class="address">&nbsp;·&nbsp;{{commentData.user_ip_address}}</span>
             </div>
             <div :class="['iconfont icon-dianzan',
-                             commentData.like_type==1?'active':'',
+                             commentData.likeType==1?'active':'',
                              ]"
                  @click="doLike(commentData)">
                 {{commentData.good_count>0?commentData.good_count:"点赞"}}
@@ -32,10 +36,10 @@
                 回复
             </div>
             <el-dropdown v-if="articleUserId==currentUserId">
-                <div class="iconfont icon-more"></div>
+                <div class="iconfont icon-more" style="outline: none"></div>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>
+                        <el-dropdown-item @click="doTop(commentData)">
                             {{commentData.top_type==0?"设为置顶":"取消置顶"}}
                         </el-dropdown-item>
                     </el-dropdown-menu>
@@ -66,7 +70,7 @@
                         </div>
                         <div
                              :class="['iconfont icon-dianzan',
-                             sub.like_type==1 ? 'active':'']"
+                             sub.likeType==1 ? 'active':'']"
                              @click="doLike(sub)">
                             {{sub.good_count>0?sub.good_count:"点赞"}}
                         </div>
@@ -116,7 +120,7 @@ commentData:{
     }
 })
 //显示评论框,更新评论数
-const emit = defineEmits(["hiddenAllReplay","updateSubCommentCount"]);
+const emit = defineEmits(["hiddenAllReplay","updateSubCommentCount","reloadData"]);
 const api = {
     doLike:"/comment/doLike",
     changeTopType:"/comment/changeTopType"
@@ -170,9 +174,23 @@ const doLike = async (data)=>{
         return;
     }
     data.good_count = result.data.good_count;
-    data.like_type = result.data.likeType;
+    data.likeType = result.data.likeType;
 
+}
 
+//置顶
+const doTop = async (data)=>{
+    let result = await proxy.Request({
+        url: api.changeTopType,
+        params: {
+            commentId : data.comment_id,
+            topType: data.top_type==0?1:0,
+        },
+    });
+    if (!result){
+        return;
+    }
+    emit("reloadData");
 }
 
 </script>
@@ -198,14 +216,27 @@ const doLike = async (data)=>{
                 color: #fff;
                 font-size: 12px;
                 border-radius: 2px;
-
+                padding: 0px 3px;
             }
-
         }
         .comment-content{
             margin-top: 5px;
             font-size: 15px;
             line-height: 22px;
+            .tag-topping{
+                color: var(--pink);
+                border: 1px solid var(--pink);
+            }
+            .tag{
+                margin-right: 5px;
+                font-size: 12px;
+                border-radius: 3px;
+                padding: 0px 5px;
+            }
+            .no-audit{
+                color: var(--test2);
+                border: 1px solid var(--test2);
+            }
         }
         .op-panel{
             display: flex;

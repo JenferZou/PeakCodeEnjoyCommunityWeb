@@ -1,97 +1,5 @@
 <template>
 <div>
-
-<!--            <div class="header" v-if="showHeader">-->
-<!--            <div class="header-content" :style="{width:proxy.globalInfo.headbodywidth+'px'}">-->
-<!--                <div class="logo">-->
-<!--                  <span v-for="item in logoInfo" :style="{color: item.color}">-->
-<!--                      {{item.letter}}-->
-<!--                  </span>-->
-<!--                </div>-->
-<!--                <div class="menu-panel">-->
-<!--                    <router-link :class="['menu-item home',activePBoardId==undefined?'active':'']" to="/">首页</router-link>-->
-<!--                    <template v-for="board in boardList">-->
-<!--                        <el-popover-->
-<!--                                placement="bottom-start"-->
-<!--                                :width="300"-->
-<!--                                trigger="hover"-->
-<!--                                v-if="board.children.length >0"-->
-
-<!--                        >-->
-<!--                            <template #reference>-->
-<!--                                <span :class="['menu-item',board.board_id==activePBoardId?'active':'']"-->
-<!--                                      @click="boardClickHandler(board)">{{board.board_name}}</span>-->
-<!--                            </template>-->
-<!--                            <div class="sub-board-list">-->
-<!--                        <span :class="['sub-board',subboard.board_id==activeBoardId?'active':'']"-->
-<!--                              v-for="subboard in board.children"-->
-<!--                              @click="subBoardClickHandler(subboard)">-->
-<!--                            {{subboard.board_name}}-->
-<!--                        </span>-->
-<!--                            </div>-->
-<!--                        </el-popover>-->
-<!--                        <span :class="['menu-item',board.board_id==activePBoardId?'active':'']" v-else @click="boardClickHandler(board)">{{board.board_name}}</span>-->
-<!--                    </template>-->
-<!--                </div>-->
-<!--                <div class="user-info-panel">-->
-
-<!--                    <div class="op-btn">-->
-<!--                        <el-button type="primary">发帖-->
-<!--                            <span class="iconfont icon-jia" style="padding-left: 3px">-->
-<!--                </span>-->
-<!--                        </el-button>-->
-<!--                        <el-button type="primary" :style="{'margin-left':'3px'}">搜索-->
-<!--                            <span class="iconfont icon-sousuo" style="padding-left: 3px">-->
-<!--                </span>-->
-<!--                        </el-button>-->
-<!--                    </div>-->
-
-<!--                    <template v-if="userInfo.userId">-->
-<!--                        <div class="message-info">-->
-<!--                            <el-dropdown :style="{'margin-left':'10px'}">-->
-<!--                                <el-badge :value="12" class="item">-->
-<!--                                    <div class="iconfont icon-Message"></div>-->
-<!--                                </el-badge>-->
-<!--                                <template #dropdown>-->
-<!--                                    <el-dropdown-menu>-->
-<!--                                        <el-dropdown-item>-->
-<!--                                            回复我的-->
-<!--                                        </el-dropdown-item>-->
-<!--                                        <el-dropdown-item>-->
-<!--                                            赞了我的文章的-->
-<!--                                        </el-dropdown-item>-->
-<!--                                    </el-dropdown-menu>-->
-<!--                                </template>-->
-<!--                            </el-dropdown>-->
-<!--                        </div>-->
-<!--                        <div class="user-info">-->
-<!--                            <el-dropdown>-->
-<!--                                <Avatar :width="50"></Avatar>-->
-<!--                                <template #dropdown>-->
-<!--                                    <el-dropdown-menu>-->
-<!--                                        <el-dropdown-item>-->
-<!--                                            我的主页-->
-<!--                                        </el-dropdown-item>-->
-<!--                                        <el-dropdown-item>-->
-<!--                                            退出-->
-<!--                                        </el-dropdown-item>-->
-<!--                                    </el-dropdown-menu>-->
-<!--                                </template>-->
-<!--                            </el-dropdown>-->
-
-<!--                        </div>-->
-<!--                    </template>-->
-
-
-<!--                    <el-button-group :style="{'margin-left':'10px'}" v-else>-->
-<!--                        <el-button type="primary" plain @click="loginAndRegister(1)">登录</el-button>-->
-<!--                        <el-button type="primary" plain @click="loginAndRegister(0)">注册</el-button>-->
-<!--                    </el-button-group>-->
-<!--                </div>-->
-
-<!--            </div>-->
-
-<!--        </div>-->
 <Head></Head>
 
 
@@ -279,7 +187,7 @@ const subBoardClickHandler = (subBoard)=>{
 }
 
 .body-content{
-  margin: 80px auto;
+  margin: 65px 0px auto auto;
 }
 
 

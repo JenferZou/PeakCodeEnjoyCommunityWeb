@@ -7,7 +7,7 @@ const Confirm = (message,okfun)=>{
         "type":"info",
 
     }).then(async ()=>{
-        okfun;
+        okfun();
     }).catch(()=>{
 
     })

@@ -6,6 +6,41 @@
   "description": "博客专用图标",
   "glyphs": [
     {
+      "icon_id": "17800056",
+      "name": "交换",
+      "font_class": "change",
+      "unicode": "e67f",
+      "unicode_decimal": 59007
+    },
+    {
+      "icon_id": "36474022",
+      "name": "change",
+      "font_class": "change1",
+      "unicode": "e88c",
+      "unicode_decimal": 59532
+    },
+    {
+      "icon_id": "7008886",
+      "name": "add",
+      "font_class": "add",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "16549959",
+      "name": "add",
+      "font_class": "add1",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "11372758",
+      "name": "点赞",
+      "font_class": "dianzan1",
+      "unicode": "e8c3",
+      "unicode_decimal": 59587
+    },
+    {
       "icon_id": "7617118",
       "name": "remove",
       "font_class": "remove",

@@ -33,6 +33,7 @@
                     @hiddenAllReplay="hiddenAllReplyHandle"
                     @updateSubCommentCount="updateSubCommentCount"
                     :articleId="articleId"
+                    @reloadData="loadComment"
                 ></CommentListItem>
             </template>
         </PageDataList>
@@ -58,10 +59,6 @@ const props = defineProps({
 
 const api = {
     loadComment:"/comment/loadComment",
-    postComment:"/comment/postComment",
-    doLike:"/comment/doLike",
-    changeTopType:"/comment/changeTopType"
-
 }
 //排序
 const orderType =ref(0)

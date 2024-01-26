@@ -21,15 +21,25 @@ const router = createRouter({
         name:'二级板块',
         component:()=>import('@/views/forum/ArticleList.vue'),
       },
-
+      {
+        path:'/post/:articleId/',
+        name:'文章详情',
+        component:()=>import('@/views/forum/ArticleDetail.vue'),
+      },
+      {
+        path:'/postArticle',
+        name:'发布文章',
+        component:()=>import('@/views/forum/EditArticle.vue'),
+      },
+      {
+        path:'/editArticle/:articleId',
+        name:'修改文章',
+        component:()=>import('@/views/forum/EditArticle.vue'),
+      },
     ]
 
   },
-    {
-      path:'/post/:articleId/',
-      name:'文章详情',
-      component:()=>import('@/views/forum/ArticleDetail.vue'),
-    },]
+  ]
 });
 
 export default router

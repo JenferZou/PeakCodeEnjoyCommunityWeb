@@ -1,13 +1,12 @@
 <template>
     <div>
-            <el-header>
                 <Head></Head>
-            </el-header>
 
                     <div class="container-body article-detail-body"
                          :style="{width:proxy.globalInfo.articleWidth+'px'}"
                          v-if="Object.keys(articleInfo).length>0"
                     >
+<!--                        板块信息-->
                         <div class="board-info">
                             <router-link :to="`/forum/${articleInfo.p_board_id}`" class="a-link">
                                 {{articleInfo.p_board_name}}
@@ -23,7 +22,8 @@
                             <span class="iconfont icon-icon_right"></span>
                             <span>{{articleInfo.title}}</span>
                         </div>
-                        <div class="detail-container" :style="{width:proxy.globalInfo.articleWidth +'px'}">
+<!--                        文章详情-->
+                        <div class="detail-container" :style="{width:proxy.globalInfo.contentwidth +'px'}">
                             <div class="article-detail">
                                 <!--文章标题-->
                                 <div class="title">{{articleInfo.title}}</div>
@@ -87,6 +87,28 @@
                             </div>
 
                         </div>
+
+                        <!--                        目录-->
+                        <div class="toc-pannel">
+                            <div class="toc-containner">
+                                <div class="toc-title">
+                                    目录
+                                </div>
+                                <div class="toc-list">
+                                    <template v-if="tocArray.length==0">
+                                        <div class="no-toc">
+                                            暂无目录
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <div v-for="toc in tocArray">
+                                            <span>{{toc.title}}</span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
                         <!--快捷操作 -->
                         <div class="quick-panel" :style="{left:leftquickPanel+'px'}">
                             <!-- 点赞 -->
@@ -114,6 +136,7 @@
                             <ImageViewer ref="imageViewerRef" :image-list="previewImgList">
                             </ImageViewer>
                         </div>
+
                     </div>
 
 
@@ -210,13 +233,17 @@ const getArticleDetail= async (articleId)=>{
     articleInfo.value = result.data.forumArticleVo;
     attachment.value=result.data.forumArticleAttachmentVo;
     haveLike.value = result.data.haveLike;
+    store.commit("setActivePBoardId",result.data.forumArticleVo.p_board_id);
+    store.commit("setActiveBoardId",result.data.forumArticleVo.board_id);
     //图片预览
     imagePreview();
     //代码高亮
     highlightCode();
 
-    store.commit("setActivePBoardId",result.data.forumArticleVo.p_board_id);
-    store.commit("setActiveBoardId",result.data.forumArticleVo.board_id);
+    //生成目录
+    makeToc();
+
+
 }
 
 //点赞
@@ -311,7 +338,7 @@ onMounted(()=>{
 })
 
 //快捷操作
-const leftquickPanel = (window.innerWidth-proxy.globalInfo.articleWidth)/2-150;
+const leftquickPanel = (window.innerWidth-proxy.globalInfo.articleWidth)/2-130;
 //跳转到对应模块
 const goToPosition = (domId)=>{
     document.querySelector("#"+domId).scrollIntoView();
@@ -322,12 +349,39 @@ const updateCommentCount = (commentCount)=>{
     articleInfo.value.comment_count = commentCount;
 }
 
+//获取目录
+const tocArray =ref([]);
 
+const makeToc =()=>{
+    nextTick(()=>{
+        const tocTags =["H1","H2","H3","H4","H5","H6"];
+        //获取所有H标签
+        const contentDom = document.querySelector("#article-content");
+        const childNodes = contentDom.childNodes;
+        let index = 0;
+        childNodes.forEach((item)=>{
+            let tagName = item.tagName;
+            if(tagName==undefined||!tocTags.includes(tagName.toUpperCase())){
+                return true;
+            }
+            index++;
+            let id = "toc"+index;
+            item.setAttribute("id",id);
+            tocArray.value.push({
+                id:id,
+                title:item.innerText,
+                level:Number.parseInt(tagName.substring(1)),
+                offsetTop:item.offsetTop,
+            })
+        })
+    })
+}
 
 </script>
 
 <style lang="scss" >
 .article-detail-body{
+    position: relative;
     .board-info{
         line-height: 40px;
         .icon-icon_right{
@@ -453,7 +507,32 @@ const updateCommentCount = (commentCount)=>{
     }
 
 }
-
+.toc-pannel{
+    position: absolute;
+    top: 45px;
+    right: 0px;
+    width: 80px;
+    .toc-containner{
+        width: 260px;
+        position: fixed;
+        background-color: #fff;
+        .toc-title{
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+        .toc-list{
+            max-height: calc(100vh - 100px);
+            overflow: auto;
+            padding: 5px;
+            .no-toc{
+                text-align: center;
+                color: #5f5d5d;
+                line-height: 40px;
+                font-size: 13px;
+            }
+        }
+    }
+}
 
 .el-header{
     padding: 0;
@@ -463,6 +542,7 @@ const updateCommentCount = (commentCount)=>{
 </style>
 
 <style>
+/*代码高亮*/
 pre code.hljs {
     position: relative;
     display: block;

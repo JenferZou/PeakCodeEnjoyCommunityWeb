@@ -1,7 +1,8 @@
 const regs ={
     email:/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/,
-    number:/^[1][3,4,5,6,7,8,9][0-9]{9}$/,
+    telephone:/^[1][3,4,5,6,7,8,9][0-9]{9}$/,
     password:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/,
+    number:/^([0]|[1-9][0-9]*)$/,
 }
 // const verify=(rule,value,reg,callback)=>{
 //     if(value){
@@ -36,4 +37,8 @@ export default {
     password: (rule,value,callback)=>{
         return verify(rule,value,regs.password,callback)
     },
+    telephone: (rule,value,callback)=>{
+        return verify(rule,value,regs.telephone,callback)
+    }
+
 }

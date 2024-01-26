@@ -22,6 +22,10 @@ import PageDataList from "@/components/PageDataList.vue"
 import Nodata from "@/components/Nodata.vue"
 import ImageViewer from "@/components/ImageViewer.vue"
 import Avatar from "@/components/Avatar.vue";
+import EditorHtml from "@/components/EditorHtml.vue";
+import EditorMarkdown from "@/components/EditorMarkdown.vue";
+import CoverUpload from "@/components/CoverUpload.vue";
+import AttachmentSelector from "@/components/AttachmentSelector.vue";
 // import HighLightCode from "@/utils/HighLightCode";
 const app = createApp(App)
 
@@ -31,15 +35,16 @@ app.component("PageDataList",PageDataList);
 app.component("Nodata",Nodata);
 app.component("ImageViewer",ImageViewer);
 app.component("Avatar",Avatar);
-
-
-
+app.component("EditorHtml",EditorHtml);
+app.component("EditorMarkdown",EditorMarkdown);
+app.component("CoverUpload",CoverUpload);
+app.component("AttachmentSelector",AttachmentSelector);
 
 app.use(store)
 app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo={
     headbodywidth:1250,
-    contentwidth:760,
+    contentwidth:800,
     articleWidth:900,
     avatarUrl:"/api/file/getAvatar/",
     imageUrl:"/api/file/getImage/"

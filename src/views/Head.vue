@@ -35,7 +35,7 @@
                 <div class="user-info-panel">
 
                     <div class="op-btn">
-                        <el-button type="primary">发帖
+                        <el-button type="primary" @click="postArticle">发帖
                             <span class="iconfont icon-jia" style="padding-left: 3px">
                 </span>
                         </el-button>
@@ -231,9 +231,15 @@ watch(
     {immediate:true,deep:true}
 );
 
+const postArticle = ()=>{
+    if(!store.getters.getLoginUserInfo){
+        loginAndRegister(1);
+    }else {
+        router.push("/postArticle");
+    }
+}
 
-
-//Zblog的logo
+//网站的logo
 const logoInfo = ref([
     {letter:"S",
         color: "rgb(50, 133, 255)",

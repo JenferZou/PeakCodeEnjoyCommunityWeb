@@ -158,6 +158,7 @@ const getUserInfo= async ()=>{
         return;
     }
     store.commit("updateLoginUserInfo",result.date)
+
 };
 
 const myPopover = ref(null);

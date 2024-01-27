@@ -26,7 +26,10 @@
                         <div class="detail-container" :style="{width:proxy.globalInfo.contentwidth +'px'}">
                             <div class="article-detail">
                                 <!--文章标题-->
-                                <div class="title">{{articleInfo.title}}</div>
+                                <div class="title">
+                                    {{articleInfo.title}}
+                                    <el-tag v-if="articleInfo.status==0" type="danger">待审核</el-tag>
+                                </div>
                                 <!--用户信息-->
                                 <div class="user-info">
                                     <!--
@@ -34,7 +37,8 @@
                                     头像
                                     -->
                                     <div class="user-info-details">
-                                        <router-link  class="nick-name" :to="`/user/${articleInfo.user_id}`">
+                                        <router-link
+                                            class="nick-name" :to="`/user/${articleInfo.user_id}`">
                                             {{articleInfo.nick_name}}
                                         </router-link>
                                         <div class="time-info">
@@ -43,6 +47,11 @@
                                             <span class="iconfont icon-yanjing_xianshi">
                                             {{articleInfo.read_count==0?"阅读":articleInfo.read_count}}
                                         </span>
+                                            <router-link :to="`/editArticle/${articleInfo.article_id}`"
+                                                         v-if="articleInfo.user_id==currentUserInfo.userId"
+                                                         class="a-link">
+                                                <span class="iconfont icon-bianji1">编辑</span>
+                                            </router-link>
                                         </div>
 
                                     </div>
@@ -102,7 +111,10 @@
                                     </template>
                                     <template v-else>
                                         <div v-for="toc in tocArray">
-                                            <span>{{toc.title}}</span>
+                                            <span :class="['toc-item',toc.id==curAnchorId?'active':'']"
+                                                  :style="{'padding-left':toc.level * 15 + 'px'}"
+                                                   @click="gotoAnchor(toc.id)"
+                                            >{{toc.title}}</span>
                                         </div>
                                     </template>
                                 </div>
@@ -146,7 +158,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, getCurrentInstance, onMounted, watch, nextTick} from "vue";
+import {ref, reactive, getCurrentInstance, onMounted, watch, nextTick, onUnmounted} from "vue";
 import {useRouter,useRoute} from "vue-router";
 import {useStore} from "vuex";
 import Head from "@/views/Head.vue";
@@ -167,17 +179,20 @@ const api ={
     attachmentDownload:"/api/forum/attachmentDownload",
     getUserInfo:"/getUserInfo",
 }
+
+
+const currentUserInfo =ref({});
+
 //附件
 const attachment = ref({});
 //下载附件
 const downloadAttachment = async (fileId)=>{
-    const currentUserInfo =store.getters.getLoginUserInfo;
-    if(!currentUserInfo){
+    if(!currentUserInfo.value){
         store.commit("showLogin",true);
         return;
     }
     //不需要积分或者是本人的文章直接下载
-    if(attachment.value.integral ==0 ||currentUserInfo.user_id!=articleInfo.value.user_id){
+    if(attachment.value.integral ==0 ||currentUserInfo.value.user_id!=articleInfo.value.user_id){
         downloadDo(fileId);
         return;
     }
@@ -333,8 +348,15 @@ const getUserInfo= async ()=>{
     store.commit("updateLoginUserInfo",result.data);
 };
 
+watch(()=>store.getters.getLoginUserInfo,
+    (newVal,oldVal)=>{
+
+    currentUserInfo.value = newVal||{};
+},
+{immediate:true,deep:true});
+
 onMounted(()=>{
-    getArticleDetail(route.params.articleId)
+    getArticleDetail(route.params.articleId);
 })
 
 //快捷操作
@@ -375,7 +397,46 @@ const makeToc =()=>{
             })
         })
     })
+};
+
+const curAnchorId = ref(null);
+const gotoAnchor = (domId)=>{
+    const dom = document.querySelector("#"+domId);
+    dom.scrollIntoView({
+        behavior:"smooth",
+        block:"start",
+    })
+};
+
+
+const listenerScroll = ()=>{
+    let currentScrollTop = getScrollTop();
+    tocArray.value.some((item,index)=>{
+        if(index<tocArray.value.length-1&&
+        currentScrollTop>=tocArray.value[index].offsetTop&&
+            currentScrollTop<tocArray.value[index+1].offsetTop
+            ||index==tocArray.value.length-1&&
+            currentScrollTop>=tocArray.value[index].offsetTop
+        ){
+            curAnchorId.value = item.id;
+        }
+    })
 }
+
+//获取滚动条的高度
+const getScrollTop = ()=>{
+    let scrollTop = document.documentElement.scrollTop ||
+        window.pageYOffset || document.body.scrollTop;
+    return scrollTop;
+};
+
+onMounted(()=>{
+    window.addEventListener("scroll",listenerScroll,false);
+})
+
+onUnmounted(()=>{
+    window.removeEventListener("scroll",listenerScroll,false)
+})
 
 </script>
 
@@ -426,10 +487,9 @@ const makeToc =()=>{
                 }
             }
             .article-content{
-
                 margin-top: 10px;
                 letter-spacing: 1px;
-                line-height: 22px;
+                line-height: 21px;
                 a{
                     text-decoration: none;
                     color:var(--link);
@@ -507,6 +567,7 @@ const makeToc =()=>{
     }
 
 }
+//目录样式
 .toc-pannel{
     position: absolute;
     top: 45px;
@@ -530,6 +591,32 @@ const makeToc =()=>{
                 line-height: 40px;
                 font-size: 13px;
             }
+            .toc-item{
+                cursor: pointer;
+                display: block;
+                line-height: 35px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                color: #555666;
+                border-radius: 3px;
+                font-size: 14px;
+                border-left: 2px solid #fff;
+            }
+            .toc-item:hover{
+                background: #eeeded;
+            }
+            .active{
+                color: var(--link);
+                background: #eeeded;
+
+
+
+
+
+                border-left: 2px solid #6ca1f7;
+                border-radius: 0px 3px 3px 0px;
+            }
         }
     }
 }
@@ -546,7 +633,7 @@ const makeToc =()=>{
 pre code.hljs {
     position: relative;
     display: block;
-    padding: 30px 10px 2px 0;
+    padding: 30px 10px 2px 10px;
     overflow-x: auto;
     font-size: 14px;
     line-height: 24px;

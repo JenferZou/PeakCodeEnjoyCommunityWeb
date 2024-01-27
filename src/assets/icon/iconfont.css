@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 4252224 */
-  src: url('iconfont.woff2?t=1706232133852') format('woff2'),
-       url('iconfont.woff?t=1706232133852') format('woff'),
-       url('iconfont.ttf?t=1706232133852') format('truetype');
+  src: url('iconfont.woff2?t=1706327616895') format('woff2'),
+       url('iconfont.woff?t=1706327616895') format('woff'),
+       url('iconfont.ttf?t=1706327616895') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,38 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-login:before {
+  content: "\e766";
+}
+
+.icon-register:before {
+  content: "\e6d6";
+}
+
+.icon-jifen:before {
+  content: "\e70c";
+}
+
+.icon-CRM_icon_nvxing:before {
+  content: "\e618";
+}
+
+.icon-man:before {
+  content: "\ebed";
+}
+
+.icon-nvxing:before {
+  content: "\ee2c";
+}
+
+.icon-bianji:before {
+  content: "\e61d";
+}
+
+.icon-bianji1:before {
+  content: "\e604";
 }
 
 .icon-change:before {

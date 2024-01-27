@@ -6,6 +6,62 @@
   "description": "博客专用图标",
   "glyphs": [
     {
+      "icon_id": "3756772",
+      "name": "符号-login",
+      "font_class": "login",
+      "unicode": "e766",
+      "unicode_decimal": 59238
+    },
+    {
+      "icon_id": "7210573",
+      "name": "register",
+      "font_class": "register",
+      "unicode": "e6d6",
+      "unicode_decimal": 59094
+    },
+    {
+      "icon_id": "321993",
+      "name": "integral",
+      "font_class": "jifen",
+      "unicode": "e70c",
+      "unicode_decimal": 59148
+    },
+    {
+      "icon_id": "8852619",
+      "name": "CRM_icon_女性",
+      "font_class": "CRM_icon_nvxing",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
+      "icon_id": "19728504",
+      "name": "男",
+      "font_class": "man",
+      "unicode": "ebed",
+      "unicode_decimal": 60397
+    },
+    {
+      "icon_id": "27402488",
+      "name": "女性",
+      "font_class": "nvxing",
+      "unicode": "ee2c",
+      "unicode_decimal": 60972
+    },
+    {
+      "icon_id": "1614435",
+      "name": "编辑",
+      "font_class": "bianji",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "2815703",
+      "name": "编辑",
+      "font_class": "bianji1",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
       "icon_id": "17800056",
       "name": "交换",
       "font_class": "change",

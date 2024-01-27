@@ -36,6 +36,11 @@ const router = createRouter({
         name:'修改文章',
         component:()=>import('@/views/forum/EditArticle.vue'),
       },
+      {
+        path:'/user/:userId',
+        name:'用户中心',
+        component:()=>import('@/views/UserCenter/UserCenter.vue'),
+      },
     ]
 
   },

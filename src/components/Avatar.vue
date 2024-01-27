@@ -7,12 +7,12 @@
 >
 
 </el-image>
-    <el-image v-else :style="{width:width+'px',height:width+'px','border-radius':width/2+'px'}"
-          :src="proxy.globalInfo.avatarUrl"
-          :zoom-rate="1.2" fit="scale-down"
-          loading="lazy" @click="goToUcenter"
->
-</el-image>
+<!--    <el-image v-else :style="{width:width+'px',height:width+'px','border-radius':width/2+'px'}"-->
+<!--          :src="proxy.globalInfo.avatarUrl"-->
+<!--          :zoom-rate="1.2" fit="scale-down"-->
+<!--          loading="lazy" @click="goToUcenter"-->
+<!--&gt;-->
+<!--</el-image>-->
 </div>
 </template>
 
@@ -37,7 +37,7 @@ const props = defineProps({
 
 const goToUcenter = ()=>{
     if(props.addLink){
-        router.push("/user"+props.userId);
+        router.push("/user"+"/"+props.userId);
     }
 }
 </script>

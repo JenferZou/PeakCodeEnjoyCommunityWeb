@@ -63,8 +63,7 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .article-item {
-    padding: 5px 15px 0px 15px;
-
+    padding: 5px 10px 0px 3px;
     .article-item-inner {
         border-bottom: 1px solid #ddd;
         padding: 10px;
@@ -80,7 +79,6 @@ const props = defineProps({
                 color: #4e5969;
 
                 .link-info {
-                    margin-left: 5px;
                     color: #494949;
                     text-decoration: none;
                 }
@@ -98,7 +96,8 @@ const props = defineProps({
             .title {
                 font-weight: bold;
                 text-decoration: none;
-                color: #4a4a4a;
+                color: #337ab7;
+                padding: 5px 0px;
                 font-size: 15px;
                 display: inline-block;
                 //max-resolution: 10px 0px;

@@ -41,6 +41,11 @@ const router = createRouter({
         name:'用户中心',
         component:()=>import('@/views/UserCenter/UserCenter.vue'),
       },
+      {
+        path:'/user/message/:type',
+        name:'消息中心',
+        component:()=>import('@/views/UserCenter/MessageList.vue'),
+      },
     ]
 
   },

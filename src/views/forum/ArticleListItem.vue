@@ -55,6 +55,7 @@ const props = defineProps({
         type:Object,
         required:true,
     },
+    showComment:Boolean,
 
 
 

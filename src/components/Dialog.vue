@@ -46,7 +46,7 @@ const props = defineProps({
     },
     top:{
         type:String,
-        default:"50px",
+        default:"30px",
     },
     buttons:{
         type:Array,
@@ -76,6 +76,8 @@ emit("close");
         border-bottom: 1px solid #ddd;
         padding: 15px;
         min-height: 15px;
+        max-height: calc(100vh - 200px);
+        overflow: auto;
     }
     .dialog-footer{
         text-align: right;

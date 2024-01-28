@@ -23,7 +23,9 @@ import "@wangeditor/editor/dist/css/style.css";
 import {ref,onBeforeUnmount,shallowRef} from "vue";
 import {Editor, Toolbar} from "@wangeditor/editor-for-vue";
 import {getCurrentInstance} from "vue";
-import store from "@/store";
+import {useStore} from "vuex";
+const store = useStore();
+
 const {proxy} = getCurrentInstance();
 
 const props = defineProps({

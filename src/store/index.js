@@ -10,6 +10,10 @@ export default createStore({
         activePBoardId:0,
         //当前二级板块
         activeBoardId:0,
+        //消息数量
+        messageCountInfo :{},
+        //系统设置信息
+        sysSetting:{},
     },
     getters:{
         getLoginUserInfo:(state)=>{
@@ -33,6 +37,12 @@ export default createStore({
         getActiveBoardId:(state)=>{
             return state.activeBoardId;
         },
+        getMessageCountInfo(state){
+            return state.messageCountInfo;
+        },
+        getSysSetting(state){
+            return state.sysSetting;
+        },
     },
     mutations:{
         updateLoginUserInfo(state,value){
@@ -49,7 +59,17 @@ export default createStore({
         },
         setActiveBoardId:(state,value)=>{
             state.activeBoardId = value;
-        }
+        },
+        setMessageCountInfo:(state,value)=>{
+            state.messageCountInfo = value;
+        },
+        readMessage:(state,value)=>{
+            state.messageCountInfo.total = state.messageCountInfo.total-state.messageCountInfo[value]
+            state.messageCountInfo[value] = 0;
+        },
+        setSysSetting(state,value){
+            state.sysSetting = value;
+        },
     },
     actions:{},
     modules:{},

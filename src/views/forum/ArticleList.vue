@@ -1,6 +1,6 @@
 <template>
 <div class="container-body article-list-body"
-:style="{width:proxy.globalInfo.contentwidth+'px'}">
+:style="{width:proxy.globalInfo.articleListWidth+'px'}">
     <!--二级板块信息-->
     <div class="sub-board" v-if="pBoardId" >
         <span :class="['board-item',boardId==0?'active':'']">
@@ -26,7 +26,7 @@
             :dataSource="articleListInfo"
             @loadData="loadArticle">
             <template #default="{data}">
-                <ArticleListItem :data="data"></ArticleListItem>
+                <ArticleListItem :data="data" :show-comment="showComment"></ArticleListItem>
             </template>
         </PageDataList>
 
@@ -121,11 +121,19 @@ watch(
     {immediate:true,deep:true}
 );
 
+
+const showComment =ref(false);
+watch(()=>store.state.sysSetting,(newVal,oldVal)=>{
+    if(newVal){
+        showComment.value = newVal.commentOpen;
+    }
+},{immediate:true,deep:true})
 </script>
 
 <style lang="scss" scoped>
 .article-list-body{
     .sub-board{
+        margin-top: 5px;
         padding: 5px 0px 10px 0px;
         .board-item{
             background: #fff;
@@ -150,6 +158,7 @@ watch(
   .article-panel{
     background: #fff;
     .top-tab{
+        margin-top: 10px;
       display: flex;
       align-items: center;
       padding:15px;

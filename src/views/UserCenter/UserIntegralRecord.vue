@@ -3,16 +3,16 @@
         :show="dialogConfig.show"
         :title="dialogConfig.title"
         :buttons="dialogConfig.buttons"
-        width="450px"
-        :showCancel="false"
+        width="600px"
+        :show-cancle="false"
         @close="dialogConfig.show = false">
         <el-form
             :model="formData"
             ref="formDataRef"
-            label-width="80px"
+            label-width="40px"
         >
-            <el-form-item label="日期" >
-                <el-date-picker v-model="formData.create_time_range"
+            <el-form-item label="日期" prop="createTimeRange" >
+                <el-date-picker v-model="formData.createTimeRange"
                                 range-separator="~"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
@@ -25,7 +25,7 @@
         <div class="data-item">
             <div class="record-type">类型</div>
             <div class="integral">积分</div>
-            <div class="create_time">时间</div>
+            <div class="create-time">时间</div>
         </div>
         <PageDataList
             :loading="loading"
@@ -37,7 +37,7 @@
                     <div :class="['integral',
                     data.integral > 0 ? 'add' : 'reduce'
                     ]">{{data.integral}}</div>
-                    <div class="create_time">{{data.create_time}}</div>
+                    <div class="create-time">{{data.create_time}}</div>
                 </div>
             </template>
         </PageDataList>
@@ -48,12 +48,9 @@
 import {nextTick, reactive} from "vue";
 import { ref, getCurrentInstance} from "vue";
 import {useRouter, useRoute} from "vue-router"
-import CoverUpload from "@/components/CoverUpload.vue";
 import PageDataList from "@/components/PageDataList.vue";
-import ArticleListItem from "@/views/forum/ArticleListItem.vue";
 const { proxy}= getCurrentInstance();
 const router =useRouter();
-const route =useRoute();
 
 const api = {
     loadUserIntegralRecord: '/ucenter/loadUserIntegralRecord',
@@ -84,9 +81,9 @@ const loadRecord = async ()=>{
     let params ={
         pageNo:recordInfo.value.pageNo,
     };
-    if (formData.value.create_time_range){
-        params.create_time_start = formData.value.create_time_range[0];
-        params.create_time_end = formData.value.create_time_range[1];
+    if (formData.value.createTimeRange){
+        params.createTimeStart = formData.value.createTimeRange[0];
+        params.createTimeEnd = formData.value.createTimeRange[1];
     }
 
     let result = await proxy.Request({
@@ -105,7 +102,11 @@ const loadRecord = async ()=>{
 
 const showRecord = ()=>{
     dialogConfig.show = true;
-    loadRecord();
+    nextTick(()=>{
+        formDataRef.value.resetFields();
+        loadRecord();
+    })
+
 };
 
 defineExpose({showRecord});
@@ -115,7 +116,7 @@ defineExpose({showRecord});
 .data-item{
     display: flex;
     border-bottom: 1px solid #ddd;
-    padding: 10px 0px;
+    padding: 8px 0px;
     .add{
         color: red;
     }
@@ -126,9 +127,9 @@ defineExpose({showRecord});
         width: 120px;
     }
     .integral{
-        width: 120px;
+        width: 80px;
     }
-    .create_time{
+    .create-time{
         text-align: center;
         flex: 1;
     }

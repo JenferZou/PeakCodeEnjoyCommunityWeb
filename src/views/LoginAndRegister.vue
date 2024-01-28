@@ -139,7 +139,8 @@
                         size="large"
                         clearable
                         placeholder="请输入验证码:"
-                        v-model="formData.checkCode">
+                        v-model="formData.checkCode"
+                    @keyup.enter="doSubmit">
                         <template #prefix>
                             <span class="iconfont icon-yanzheng"></span>
                         </template>
@@ -468,6 +469,7 @@ const doSubmit = ()=>{
 const closeDilago = ()=>{
     dialogConfig.show = false;
     store.commit("showLogin",false);
+
 }
 
 </script>

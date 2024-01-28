@@ -85,7 +85,7 @@
                                 </div>
                             </div>
                             <!--评论-->
-                            <div class="comment-panel" id="view-comment">
+                            <div class="comment-panel" id="view-comment" v-if="showComment">
                                 <CommentList
                                     v-if="articleInfo.article_id"
                                     :article-id="articleInfo.article_id"
@@ -134,9 +134,13 @@
 
                             <!-- 评论 -->
                             <el-badge :value="articleInfo.comment_count"
+                                      v-if="showComment"
                                       type="info" :hidden="!articleInfo.comment_count>0"
                             >
-                                <div class="quick-item"  @click="goToPosition('view-comment')">
+                                <div class="quick-item"
+                                     @click="goToPosition('view-comment')"
+                                     v-if="showComment"
+                                >
                                     <span class="iconfont icon-xinjian"></span>
                                 </div>
                             </el-badge>
@@ -187,7 +191,8 @@ const currentUserInfo =ref({});
 const attachment = ref({});
 //下载附件
 const downloadAttachment = async (fileId)=>{
-    if(!currentUserInfo.value){
+
+    if(Object.keys(currentUserInfo.value).length === 0){
         store.commit("showLogin",true);
         return;
     }
@@ -348,9 +353,8 @@ const getUserInfo= async ()=>{
     store.commit("updateLoginUserInfo",result.data);
 };
 
-watch(()=>store.getters.getLoginUserInfo,
+watch(()=>store.state.getLoginUserInfo,
     (newVal,oldVal)=>{
-
     currentUserInfo.value = newVal||{};
 },
 {immediate:true,deep:true});
@@ -437,6 +441,13 @@ onMounted(()=>{
 onUnmounted(()=>{
     window.removeEventListener("scroll",listenerScroll,false)
 })
+
+const showComment =ref(false);
+watch(()=>store.state.sysSetting,(newVal,oldVal)=>{
+    if(newVal){
+        showComment.value = newVal.commentOpen;
+    }
+},{immediate:true,deep:true})
 
 </script>
 

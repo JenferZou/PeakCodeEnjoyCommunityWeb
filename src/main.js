@@ -44,6 +44,7 @@ app.use(store)
 app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo={
     headbodywidth:1250,
+    articleListWidth:1000,
     contentwidth:800,
     articleWidth:900,
     userCenterWidth:1100,

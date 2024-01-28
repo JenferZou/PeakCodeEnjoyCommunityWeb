@@ -217,6 +217,7 @@ const showIntegralRecord = ()=>{
     .user-nav{
         color: #616161;
         margin-bottom: 10px;
+        line-height: 35px;
         .icon-icon_right{
             padding: 0px 5px;
         }

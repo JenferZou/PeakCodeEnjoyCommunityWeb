@@ -48,17 +48,60 @@
                     <template v-if="userInfo.userId">
                         <div class="message-info">
                             <el-dropdown :style="{'margin-left':'10px'}" >
-                                <el-badge :value="12" class="item" aria-expanded="false" style="outline: none">
+                                <el-badge :value="messageCountInfo.total" class="item"
+                                          :hidden="messageCountInfo.total==null
+                                          ||messageCountInfo.total==0"
+                                          aria-expanded="false" style="outline: none">
                                     <div class="iconfont icon-Message"></div>
                                 </el-badge>
 
                                 <template #dropdown>
                                     <el-dropdown-menu>
-                                        <el-dropdown-item>
-                                            回复我的
+                                        <el-dropdown-item
+                                            class="message-item"
+                                            @click="gotoMessage('reply')">
+                                            <span class="text">回复我的</span>
+                                            <span class="count-tag"
+                                            v-if="messageCountInfo.reply>0"
+                                            >{{messageCountInfo.reply>99
+                                                ?"99+":messageCountInfo.reply}}</span>
                                         </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            赞了我的文章的
+                                        <el-dropdown-item
+                                            class="message-item"
+                                            @click="gotoMessage('likePost')">
+                                            <span class="text">赞了我的文章的</span>
+                                            <span class="count-tag"
+                                            v-if="messageCountInfo.likePost>0"
+                                            >{{messageCountInfo.likePost>99
+                                                ?"99+":messageCountInfo.likePost}}</span>
+                                        </el-dropdown-item>
+                                        <el-dropdown-item
+                                            class="message-item"
+                                            @click="gotoMessage('downloadAttachment')">
+                                            <span class="text">下载了我的附件</span>
+                                            <span class="count-tag"
+                                            v-if="messageCountInfo.downloadAttachment>0"
+                                            >{{messageCountInfo.downloadAttachment>99
+                                                ?"99+":messageCountInfo.downloadAttachment}}</span>
+                                        </el-dropdown-item>
+                                        <el-dropdown-item
+                                            class="message-item"
+                                            @click="gotoMessage('likeComment')">
+                                            <span class="text">赞了我的评论</span>
+                                            <span class="count-tag"
+                                            v-if="messageCountInfo.likeComment>0"
+                                            >{{messageCountInfo.likeComment>99
+                                                ?"99+":messageCountInfo.likeComment}}</span>
+                                        </el-dropdown-item>
+                                        <el-dropdown-item
+                                            class="message-item"
+                                            @click="gotoMessage('sys')"
+                                        >
+                                            <span class="text">系统信息</span>
+                                            <span class="count-tag"
+                                            v-if="messageCountInfo.sys>0"
+                                            >{{messageCountInfo.sys>99
+                                                ?"99+":messageCountInfo.sys}}</span>
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
                                 </template>
@@ -66,13 +109,15 @@
                         </div>
                         <div class="user-info">
                             <el-dropdown>
-                                <Avatar :width="50" style="outline: none" :user-id="userInfo.userId"></Avatar>
+                                <Avatar :width="50" style="outline: none"
+                                        :add-link="false"
+                                        :user-id="userInfo.userId"></Avatar>
                                 <template #dropdown>
                                     <el-dropdown-menu>
-                                        <el-dropdown-item>
+                                        <el-dropdown-item @click="gotoUcenter(userInfo.userId)">
                                             我的主页
                                         </el-dropdown-item>
-                                        <el-dropdown-item>
+                                        <el-dropdown-item @click="logout">
                                             退出
                                         </el-dropdown-item>
                                     </el-dropdown-menu>
@@ -105,12 +150,8 @@
 <script setup>
 import {ref, reactive, getCurrentInstance, onMounted, watch} from "vue";
 import {useRouter,useRoute} from "vue-router";
-import Dialog from "@/components/Dialog.vue";
 import LoginAndRegister from "@/views/LoginAndRegister.vue";
 import store from "@/store";
-import LeftLayout from "@/views/LeftLayout.vue";
-import RightLayout from "@/views/RightLayout.vue";
-import {useStore} from "vuex";
 import Avatar from "@/components/Avatar.vue";
 const {proxy} = getCurrentInstance();
 const router = useRouter();
@@ -120,7 +161,9 @@ const route = useRoute();
 
 const api ={
     getUserInfo:"/getUserInfo",
-    loadBoard:"/board/loadBoard"
+    loadBoard:"/board/loadBoard",
+    loadMessageCount:"/ucenter/getMessageCount",
+    logout:"/logout"
 };
 //显示与隐藏头部导航栏
 const showHeader = ref(true);
@@ -150,22 +193,11 @@ const initScroll = ()=>{
     })
 };
 
-const getUserInfo= async ()=>{
-    let result = await  proxy.Request({
-        url:api.getUserInfo
-    });
-    if(!result){
-        return;
-    }
-    store.commit("updateLoginUserInfo",result.date)
 
-};
 
 const myPopover = ref(null);
 onMounted(()=>{
         initScroll();
-        // getUserInfo();
-
     }
 
 );
@@ -187,6 +219,11 @@ loadBoard();
 
 //监听登陆后的用户信息
 const userInfo = ref({});
+const loginRegisterRef = ref();
+//登陆注册功能
+const loginAndRegister = (type)=>{
+    loginRegisterRef.value.showPanel(type);
+}
 watch(()=>store.state.loginUserInfo,
     (newVal,oldVal)=>{
         if(newVal!=undefined&&newVal!=null){
@@ -199,18 +236,14 @@ watch(()=>store.state.loginUserInfo,
 );
 
 watch(()=>store.state.showLogin,
-    (newVal,oldValue)=>{
+    (newVal,oldVal)=>{
         if(newVal){
             loginAndRegister(1);
+            store.commit("showLogin",false)
         }
-    },{immediate:true,deep:true});
+    },{immediate:true,deep:false});
 
-//登陆注册功能
-const loginRegisterRef = ref();
 
-const loginAndRegister = (type)=>{
-    loginRegisterRef.value.showPanel(type);
-}
 
 const activePBoardId = ref(0);
 watch(
@@ -282,6 +315,57 @@ const subBoardClickHandler = (subBoard)=>{
     router.push(`/forum/${subBoard.p_board_id}/${subBoard.board_id}`);
 };
 
+//消息中心
+const gotoMessage = (type)=>{
+    router.push(`/user/message/${type}`)
+};
+
+const messageCountInfo= ref({});
+const loadMessageCount = async ()=>{
+    let result = await proxy.Request({
+        url:api.loadMessageCount
+    });
+    if(!result){
+        return;
+    }
+    messageCountInfo.value = result.data;
+    store.commit("setMessageCountInfo",result.data);
+};
+
+
+watch(()=>store.state.loginUserInfo,
+    (newVal,oldVal)=>{
+    if(newVal){
+        loadMessageCount();
+    }
+    },{immediate:true,deep:true}
+);
+
+watch(()=>store.state.messageCountInfo,
+    (newVal,oldVal)=>{
+        messageCountInfo.value = newVal || {};
+
+    },{immediate:true,deep:true}
+);
+
+
+//前往用户中心
+const gotoUcenter = (userId)=>{
+    router.push(`/user/${userId}`)
+}
+
+//退出
+const logout = ()=>{
+    proxy.Confirm("确定要退出么？",async ()=>{
+        let result = await proxy.Request({
+            url:api.logout
+        });
+        if (!result){
+            return;
+        }
+        store.commit("updateLoginUserInfo",null);
+    })
+};
 </script>
 
 <style scoped lang="scss">
@@ -295,7 +379,11 @@ const subBoardClickHandler = (subBoard)=>{
   width: 100%;
   position: fixed;
   background: #ffffff;
-  box-shadow: 0 2px 6px 0 #ddd;
+    //box-shadow: 0 0 0 0 transparent,
+    //0 0 0 0 transparent,
+    //0 1px 4px 0 rgba(0,0,0,.02),
+    //0 2px 12px 0 rgba(0,0,0,.04),
+    //0 2px 6px 0 rgba(0,0,0,.02);
   z-index: 1;
   transition: top 1s;
 
@@ -342,6 +430,10 @@ const subBoardClickHandler = (subBoard)=>{
           }
           .message-info{
               margin-right: 25px;
+              cursor: pointer;
+              .icon-Message{
+                  color: rgb(147,147,147);
+              }
 
           }
 
@@ -375,5 +467,23 @@ const subBoardClickHandler = (subBoard)=>{
   }
 }
 
-
+.message-item{
+    display: flex;
+    justify-content: space-around;
+    .text{
+        flex: 1;
+    }
+    .count-tag{
+        margin-left: 10px;
+        min-width: 20px;
+        display: inline-block;
+        background: #f56c6c;
+        font-size: 13px;
+        line-height: 15px;
+        height: 15px;
+        text-align: center;
+        border-radius: 10px;
+        color: #fff;
+    }
+}
 </style>

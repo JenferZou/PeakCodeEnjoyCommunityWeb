@@ -39,7 +39,7 @@
                             <span class="iconfont icon-jia" style="padding-left: 3px">
                 </span>
                         </el-button>
-                        <el-button type="primary" :style="{'margin-left':'3px'}">搜索
+                        <el-button type="primary" :style="{'margin-left':'3px'}" @click="goSearch">搜索
                             <span class="iconfont icon-sousuo" style="padding-left: 3px">
                 </span>
                         </el-button>
@@ -366,6 +366,11 @@ const logout = ()=>{
         store.commit("updateLoginUserInfo",null);
     })
 };
+
+const goSearch = ()=>{
+    router.push("/search");
+};
+
 </script>
 
 <style scoped lang="scss">
@@ -378,19 +383,20 @@ const logout = ()=>{
   top: 0px;
   width: 100%;
   position: fixed;
-  background: #ffffff;
-    //box-shadow: 0 0 0 0 transparent,
-    //0 0 0 0 transparent,
-    //0 1px 4px 0 rgba(0,0,0,.02),
-    //0 2px 12px 0 rgba(0,0,0,.04),
-    //0 2px 6px 0 rgba(0,0,0,.02);
+    background-color: #fff;
+
+    box-shadow: 0 0 0 0 transparent,
+    0 0 0 0 transparent,
+    0 1px 4px 0 rgba(0,0,0,.02),
+    0 2px 12px 0 rgba(0,0,0,.04),
+    0 2px 6px 0 rgba(0,0,0,.02);
   z-index: 1;
   transition: top 1s;
 
   .header-content {
     margin: 0px auto;
     align-items: center;
-    height: 60px;
+    height: 65px;
     display: flex;
     align-items: center;
 

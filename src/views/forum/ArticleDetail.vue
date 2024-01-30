@@ -353,7 +353,7 @@ const getUserInfo= async ()=>{
     store.commit("updateLoginUserInfo",result.data);
 };
 
-watch(()=>store.state.getLoginUserInfo,
+watch(()=>store.state.loginUserInfo,
     (newVal,oldVal)=>{
     currentUserInfo.value = newVal||{};
 },
